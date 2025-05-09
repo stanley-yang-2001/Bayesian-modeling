@@ -1,0 +1,16 @@
+model {
+  for (j in 1:length(y)) {
+    psihat[j] ~ dnorm(psi[j], 1/sigma[j]^2)
+    psi[j] ~ dnorm(psi0, 1/sigmasq0)
+  }
+
+  psi0 ~ dnorm(0, 1/1000^2)
+  sigma0 ~ dunif(0, 1000)
+
+  sigmasq0 <- sigma0^2
+
+  psihat.tilde ~ dnorm(psi.tilde, 1/sigma.tilde^2)
+  psi.tilde ~ dnorm(psi0, 1/sigmasq0)
+
+  prob.ind <- psihat.tilde > 2*sigma.tilde
+}

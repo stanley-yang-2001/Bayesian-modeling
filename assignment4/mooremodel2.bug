@@ -1,0 +1,17 @@
+model {
+
+  for (i in 1:length(y)) {
+    y[i] ~ dnorm(beta1+beta2*(Year[i] - averageyear), sigmasqinv)
+  }
+
+  beta1 ~ dnorm(0, 0.000001)
+  beta2 ~ dnorm(0, 0.000001)
+  sigmasqinv ~ dgamma(0.001, 0.001)
+
+  sigmasq <- 1/sigmasqinv
+
+  y.tilde ~ dnorm(beta1+beta2*(targetyear - averageyear), sigmasqinv)
+  y.exp = exp(y.tilde)
+  invent.year <- averageyear - beta1/beta2
+
+}

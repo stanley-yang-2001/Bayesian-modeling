@@ -1,0 +1,25 @@
+data{
+  dimY <- dim(weight)
+  timecent <- week - mean(week)
+}
+model {
+  for (j in 1:dimY[1]) {
+    for (i in 1:dimY[2]){
+      weight[j,i] ~ dnorm(beta1[j]+beta2[j]*timecent[i], 1/sigmasqyinv)
+    }
+    beta1[j] ~ dnorm(mubeta1, sigmasqbeta1inv)
+    beta2[j] ~ dnorm(mubeta2, sigmasqbeta2inv)
+  }
+  mubeta1 ~ dnorm(0, 0.000001)
+  mubeta2 ~ dnorm(0, 0.000001)
+
+  sigmabeta1 ~ dunif(0, 1000)
+  sigmabeta2 ~ dunif(0, 1000)
+
+  sigmasqbeta1inv <- 1/(sigmabeta1)^2
+  sigmasqbeta2inv <- 1/(sigmabeta2)^2
+
+  sigmasqyinv ~ dgamma(0.0001, 0.0001)
+  sigmasqy <- 1/sigmasqyinv
+
+}

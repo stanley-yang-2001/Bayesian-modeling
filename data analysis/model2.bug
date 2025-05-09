@@ -1,0 +1,16 @@
+model{
+    for (i in 1:length(success)){
+        success[i] ~ dbern(prob[i])
+        logit(prob[i]) <- betaintercept + betaslope*timescaled[i] + epilson[vehicle[i]]
+
+
+    }
+    for (j in 1:max(vehicle)){
+        epilson[j] ~ dnorm(0, sigmavehiclesqinv)
+    }
+    betaintercept ~ dt(0, 0.1, 1)
+    betaslope ~ dt(0, 0.16, 1)
+
+    sigmavehicle ~ dunif(0,10)
+    sigmavehiclesqinv <- 1/sigmavehicle^2
+}
